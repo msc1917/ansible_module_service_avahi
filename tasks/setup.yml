@@ -29,3 +29,16 @@
   when:
     - "'ssh' in services"
   notify: restart avahi-daemon
+
+- name: Generiere /etc/avahi/services/smb.services
+  template:
+    src: "smb.service.j2"
+    dest: "/etc/avahi/services/smb.services"
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  when:
+    - "'samba' in services"
+    - samba is defined
+  notify: restart avahi-daemon
